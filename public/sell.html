@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Item - C2C Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">C2C Platform</a></div>
+        <nav class="nav-menu">
+            <a href="sell.html" class="nav-link active">Sell</a>
+        </nav>
+        <div class="auth-buttons">
+            <div id="userProfile" style="display: flex; align-items: center; gap: 15px;">
+                <span id="username"></span>
+                <button id="signoutBtn" class="btn btn-login">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="form-container">
+        <div class="form-box">
+            <h1>List an Item</h1>
+            <form id="listingForm">
+                <div class="form-group">
+                    <label for="image">Item Image</label>
+                    <input type="file" id="image" accept="image/*" required>
+                    <small>Max 5MB. Supported: JPG, PNG, GIF</small>
+                    <div id="imagePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">Item Title</label>
+                    <input type="text" id="title" placeholder="Enter item title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Describe your item" rows="5" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" placeholder="Enter price" step="0.01" min="0" required>
+                </div>
+
+                <button type="submit" class="btn btn-register" style="width: 100%; padding: 12px;">List Item</button>
+            </form>
+            <p id="formMessage" class="message"></p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="sell.js"></script>
+</body>
+</html>
+

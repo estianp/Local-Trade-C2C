@@ -1,10 +1,10 @@
 function switchTab(tabName) {
     const tabs = document.querySelectorAll(".tab-content");
     const buttons = document.querySelectorAll(".tab-btn");
-
+    
     tabs.forEach(tab => tab.classList.remove("active"));
     buttons.forEach(btn => btn.classList.remove("active"));
-
+    
     document.getElementById(tabName).classList.add("active");
     event.target.classList.add("active");
 }
@@ -13,13 +13,25 @@ function checkSession() {
     fetch("api/check_session.php")
     .then(response => response.json())
     .then(data => {
+        const signupBtn = document.getElementById("signupBtn");
+        const userProfile = document.getElementById("userProfile");
+        const sellLink = document.getElementById("sellLink");
+        
         if (data.logged_in) {
-            document.getElementById("signupBtn").style.display = "none";
-            document.getElementById("userProfile").style.display = "flex";
-            document.getElementById("username").textContent = data.username;
+            if (signupBtn) signupBtn.style.display = "none";
+            if (userProfile) {
+                userProfile.style.display = "flex";
+                document.getElementById("username").textContent = data.username;
+            }
+            if (sellLink) sellLink.style.display = "block";
         } else {
-            document.getElementById("signupBtn").style.display = "block";
-            document.getElementById("userProfile").style.display = "none";
+            if (signupBtn) signupBtn.style.display = "block";
+            if (userProfile) userProfile.style.display = "none";
+            if (sellLink) sellLink.style.display = "none";
+            
+            if (window.location.pathname.includes('sell')) {
+                window.location.href = "signup.html";
+            }
         }
     });
 }
@@ -43,7 +55,7 @@ if (document.getElementById("loginForm")) {
         e.preventDefault();
         const username = document.getElementById("loginUsername").value;
         const password = document.getElementById("loginPassword").value;
-
+        
         fetch("api/login.php", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -71,7 +83,7 @@ if (document.getElementById("registerForm")) {
         const username = document.getElementById("registerUsername").value;
         const email = document.getElementById("registerEmail").value;
         const password = document.getElementById("registerPassword").value;
-
+        
         fetch("api/register.php", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
