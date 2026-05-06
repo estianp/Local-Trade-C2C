@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - C2C Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">C2C Platform</a></div>
+    </header>
+
+    <div class="signup-container">
+        <div class="signup-box">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <div id="login" class="tab-content active">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <input type="text" placeholder="Username" id="loginUsername" required>
+                    <input type="password" placeholder="Password" id="loginPassword" required>
+                    <button type="submit" class="btn btn-register" style="width: 100%;">Login</button>
+                </form>
+                <p id="loginError" class="error"></p>
+            </div>
+
+            <div id="register" class="tab-content">
+                <h2>Register</h2>
+                <form id="registerForm">
+                    <input type="text" placeholder="Username" id="registerUsername" required>
+                    <input type="email" placeholder="Email" id="registerEmail" required>
+                    <input type="password" placeholder="Password" id="registerPassword" required>
+                    <button type="submit" class="btn btn-register" style="width: 100%;">Register</button>
+                </form>
+                <p id="registerError" class="error"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

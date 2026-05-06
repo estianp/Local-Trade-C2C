@@ -1,0 +1,10 @@
+docs/
+db_data/
+Dockerfile
+docker-compose.yml
+.vs/
+.DS_Store
+*.log
+.env
+node_modules/
+
