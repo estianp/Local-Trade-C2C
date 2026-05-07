@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Items - LocalTrade</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">LocalTrade</a></div>
+        <nav class="nav-menu">
+            <a href="browse.html" class="nav-link active">Buy</a>
+            <a href="sell.html" class="nav-link" id="sellLink" style="display: none;">Sell</a>
+        </nav>
+        <div class="auth-buttons">
+            <div id="signupBtn">
+                <a href="signup.html" class="btn btn-register">Sign Up</a>
+            </div>
+            <div id="userProfile" style="display: none; display: flex; align-items: center; gap: 15px;">
+                <span id="username"></span>
+                <button id="signoutBtn" class="btn btn-login">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="browse-section">
+        <h1>Browse Items</h1>
+        <div id="itemsContainer" class="items-grid"></div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="browse.js"></script>
+</body>
+</html>

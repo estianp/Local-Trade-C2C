@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Item - C2C Platform</title>
+    <title>List Item - LocalTrade</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">C2C Platform</a></div>
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">LocalTrade</a></div>
         <nav class="nav-menu">
+            <a href="browse.html" class="nav-link">Buy</a>
             <a href="sell.html" class="nav-link active">Sell</a>
         </nav>
         <div class="auth-buttons">
@@ -25,8 +26,8 @@
             <h1>List an Item</h1>
             <form id="listingForm">
                 <div class="form-group">
-                    <label for="image">Item Image</label>
-                    <input type="file" id="image" accept="image/*" required>
+                    <label for="image">Item Image <span style="color: #999;">(Optional)</span></label>
+                    <input type="file" id="image" accept="image/*">
                     <small>Max 5MB. Supported: JPG, PNG, GIF</small>
                     <div id="imagePreview"></div>
                 </div>
@@ -42,8 +43,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="price">Price</label>
-                    <input type="number" id="price" placeholder="Enter price" step="0.01" min="0" required>
+                    <label for="price">Price (ZAR)</label>
+                    <input type="number" id="price" placeholder="Enter price in ZAR" step="0.01" min="0" required>
                 </div>
 
                 <button type="submit" class="btn btn-register" style="width: 100%; padding: 12px;">List Item</button>

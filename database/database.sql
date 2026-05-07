@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS C2C_Platform_DB;
-USE C2C_Platform_DB;
+CREATE DATABASE IF NOT EXISTS LocalTrade_DB;
+USE LocalTrade_DB;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -13,9 +13,9 @@ CREATE TABLE items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     title VARCHAR(100) NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    image_url VARCHAR(255),
+    image LONGBLOB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
