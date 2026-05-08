@@ -1,5 +1,3 @@
-console.log('browse.js loaded immediately');
-
 function loadItems() {
     const container = document.getElementById('itemsContainer');
     
