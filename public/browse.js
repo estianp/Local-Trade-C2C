@@ -1,22 +1,11 @@
 console.log('browse.js loaded immediately');
 
 function loadItems() {
-    const loadingIndicator = document.getElementById('loadingIndicator');
     const container = document.getElementById('itemsContainer');
-    
-    if (!loadingIndicator) {
-        console.error('Loading indicator not found');
-        return;
-    }
-    
-    console.log('Showing loader');
-    loadingIndicator.style.display = 'block';
     
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
-        console.log('Items fetched:', data.length);
-        loadingIndicator.style.display = 'none';
         container.innerHTML = '';
         
         if (!data || data.length === 0) {
@@ -45,14 +34,11 @@ function loadItems() {
     })
     .catch(error => {
         console.error('Error loading items:', error);
-        loadingIndicator.style.display = 'none';
+        container.innerHTML = '<p style="color: red; grid-column: 1 / -1;">Error loading items</p>';
     });
 }
 
-console.log('About to add DOMContentLoaded listener');
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded fired');
     checkSession();
     loadItems();
 });
