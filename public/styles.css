@@ -276,8 +276,20 @@ header {
     margin-top: 10px;
     font-size: 14px;
     padding: 10px;
-    background-color: #ffebee;
+    background-color: transparent;
     border-radius: 4px;
+    display: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.error.show {
+    display: block;
+    height: auto;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffebee;
 }
 
 .browse-section {

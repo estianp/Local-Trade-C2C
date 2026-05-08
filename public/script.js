@@ -36,7 +36,16 @@ function checkSession() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", checkSession);
+document.addEventListener("DOMContentLoaded", function() {
+    // Clear all error messages on page load
+    const errors = document.querySelectorAll('.error');
+    errors.forEach(error => {
+        error.textContent = '';
+        error.classList.remove('show');
+    });
+    
+    checkSession();
+});
 
 if (document.getElementById("signoutBtn")) {
     document.getElementById("signoutBtn").addEventListener("click", function() {
@@ -55,6 +64,7 @@ if (document.getElementById("loginForm")) {
         e.preventDefault();
         const username = document.getElementById("loginUsername").value;
         const password = document.getElementById("loginPassword").value;
+        const errorEl = document.getElementById("loginError");
         
         fetch("api/login.php", {
             method: "POST",
@@ -67,11 +77,13 @@ if (document.getElementById("loginForm")) {
                 alert("Login successful!");
                 window.location.href = "index.html";
             } else {
-                document.getElementById("loginError").textContent = data.message;
+                errorEl.textContent = data.message;
+                errorEl.classList.add("show");
             }
         })
         .catch(error => {
-            document.getElementById("loginError").textContent = "Error: " + error;
+            errorEl.textContent = "Error: " + error;
+            errorEl.classList.add("show");
             console.error('Error:', error);
         });
     });
@@ -83,6 +95,7 @@ if (document.getElementById("registerForm")) {
         const username = document.getElementById("registerUsername").value;
         const email = document.getElementById("registerEmail").value;
         const password = document.getElementById("registerPassword").value;
+        const errorEl = document.getElementById("registerError");
         
         fetch("api/register.php", {
             method: "POST",
@@ -94,13 +107,17 @@ if (document.getElementById("registerForm")) {
             if (data.success) {
                 alert("Registration successful!");
                 document.getElementById("registerForm").reset();
+                errorEl.textContent = "";
+                errorEl.classList.remove("show");
                 switchTab('login');
             } else {
-                document.getElementById("registerError").textContent = data.message;
+                errorEl.textContent = data.message;
+                errorEl.classList.add("show");
             }
         })
         .catch(error => {
-            document.getElementById("registerError").textContent = "Error: " + error;
+            errorEl.textContent = "Error: " + error;
+            errorEl.classList.add("show");
             console.error('Error:', error);
         });
     });
