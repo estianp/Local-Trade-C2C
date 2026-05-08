@@ -3,6 +3,7 @@ function loadItems() {
     const container = document.getElementById('itemsContainer');
     
     loadingIndicator.style.display = 'block';
+    container.innerHTML = '';
     
     fetch('api/get_items.php')
     .then(response => response.json())
