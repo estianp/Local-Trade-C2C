@@ -1,8 +1,13 @@
 function loadItems() {
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const container = document.getElementById('itemsContainer');
+    
+    loadingIndicator.style.display = 'block';
+    
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
-        const container = document.getElementById('itemsContainer');
+        loadingIndicator.style.display = 'none';
         container.innerHTML = '';
         
         if (data.length === 0) {
@@ -31,7 +36,8 @@ function loadItems() {
     })
     .catch(error => {
         console.error('Error loading items:', error);
-        document.getElementById('itemsContainer').innerHTML = '<p style="color: red;">Error loading items</p>';
+        loadingIndicator.style.display = 'none';
+        container.innerHTML = '<p style="color: red; grid-column: 1 / -1;">Error loading items</p>';
     });
 }
 
