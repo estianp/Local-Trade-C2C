@@ -2,16 +2,20 @@ function loadItems() {
     const loadingIndicator = document.getElementById('loadingIndicator');
     const container = document.getElementById('itemsContainer');
     
-    loadingIndicator.style.display = 'block';
+    console.log('Showing loader');
+    loadingIndicator.style.display = 'grid';
+    loadingIndicator.style.alignItems = 'center';
+    loadingIndicator.style.justifyContent = 'center';
     container.innerHTML = '';
     
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
+        console.log('Items loaded, hiding loader');
         loadingIndicator.style.display = 'none';
         container.innerHTML = '';
         
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666;">No items available</p>';
             return;
         }
@@ -43,6 +47,7 @@ function loadItems() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Starting load');
     checkSession();
     loadItems();
 });
