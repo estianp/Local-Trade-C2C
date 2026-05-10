@@ -1,5 +1,25 @@
+function createSkeletonCard() {
+    const card = document.createElement('div');
+    card.className = 'item-card skeleton';
+    card.innerHTML = `
+        <div class="skeleton-image"></div>
+        <div class="skeleton-title"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text short"></div>
+        <div class="skeleton-price"></div>
+        <div class="skeleton-button"></div>
+    `;
+    return card;
+}
+
 function loadItems() {
     const container = document.getElementById('itemsContainer');
+    
+    // Show 6 skeleton cards while loading
+    container.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+        container.appendChild(createSkeletonCard());
+    }
     
     fetch('api/get_items.php')
     .then(response => response.json())
