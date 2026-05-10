@@ -15,15 +15,20 @@ function createSkeletonCard() {
 function loadItems() {
     const container = document.getElementById('itemsContainer');
     
-    // Show 6 skeleton cards while loading
+    console.log('Showing skeleton cards');
     container.innerHTML = '';
+    
+    // Show 6 skeleton cards while loading
     for (let i = 0; i < 6; i++) {
         container.appendChild(createSkeletonCard());
     }
     
+    console.log('Fetching items...');
+    
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
+        console.log('Items received, replacing skeletons');
         container.innerHTML = '';
         
         if (!data || data.length === 0) {
