@@ -32,15 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $imageData = base64_decode($imageData);
         }
         
-        $uploadsDir = __DIR__ . '/../public/uploads/';
+        $uploadsDir = '/var/www/html/uploads/';
         if (!is_dir($uploadsDir)) {
-            mkdir($uploadsDir, 0755, true);
+            mkdir($uploadsDir, 0777, true);
         }
         
         $imageFilename = uniqid() . '_' . time() . '.jpg';
         $uploadPath = $uploadsDir . $imageFilename;
         
-        // Save and compress image
         if (!file_put_contents($uploadPath, $imageData)) {
             echo json_encode(['success' => false, 'message' => 'Failed to save image']);
             exit;
