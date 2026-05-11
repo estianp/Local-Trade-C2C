@@ -24,10 +24,13 @@ CREATE TABLE items (
     title VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    image LONGBLOB,
+    image_filename VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(id)
+    FOREIGN KEY (category_id) REFERENCES categories(id),
+    INDEX idx_category_id (category_id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_created_at (created_at)
 );
 
 INSERT INTO categories (name, parent_id) VALUES 

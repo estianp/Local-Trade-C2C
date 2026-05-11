@@ -41,6 +41,12 @@ function displayItems(items) {
             <a href="item.html?id=${item.id}" class="btn btn-register" style="width: 100%; text-align: center; display: block;">View Details</a>
         `;
         container.appendChild(itemEl);
+        
+        // For img tags
+        const img = itemEl.querySelector('img');
+        if (img) {
+            img.loading = 'lazy';
+        }
     });
 }
 

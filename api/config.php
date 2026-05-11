@@ -9,4 +9,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+header("Cache-Control: max-age=3600");
+header("Pragma: public");
 ?>

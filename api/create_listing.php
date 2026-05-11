@@ -16,14 +16,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = trim($data['title'] ?? '');
     $description = trim($data['description'] ?? '');
     $price = floatval($data['price'] ?? 0);
-    $image = !empty($data['image']) ? $data['image'] : null;
+    $imageFilename = null;
     
     if (!$category_id || !$title || !$description || $price <= 0) {
         echo json_encode(['success' => false, 'message' => 'All fields required with valid price']);
         exit;
     }
     
-    $sql = "INSERT INTO items (user_id, category_id, title, description, price, image) VALUES (?, ?, ?, ?, ?, ?)";
+    // Handle image upload
+    if (!empty($data['image'])) {
+        $imageData = $data['image'];
+        
+        if (strpos($imageData, 'data:') === 0) {
+            $imageData = substr($imageData, strpos($imageData, ',') + 1);
+            $imageData = base64_decode($imageData);
+        }
+        
+        $uploadsDir = __DIR__ . '/../public/uploads/';
+        if (!is_dir($uploadsDir)) {
+            mkdir($uploadsDir, 0755, true);
+        }
+        
+        $imageFilename = uniqid() . '_' . time() . '.jpg';
+        $uploadPath = $uploadsDir . $imageFilename;
+        
+        // Save and compress image
+        if (!file_put_contents($uploadPath, $imageData)) {
+            echo json_encode(['success' => false, 'message' => 'Failed to save image']);
+            exit;
+        }
+    }
+    
+    $sql = "INSERT INTO items (user_id, category_id, title, description, price, image_filename) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
@@ -31,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     
-    $stmt->bind_param("iissds", $user_id, $category_id, $title, $description, $price, $image);
+    $stmt->bind_param("iissds", $user_id, $category_id, $title, $description, $price, $imageFilename);
     
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Item listed successfully']);
