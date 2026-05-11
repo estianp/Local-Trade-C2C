@@ -22,11 +22,12 @@ function loadItem() {
             const date = new Date(item.created_at).toLocaleDateString();
             document.getElementById('itemDate').textContent = `Listed: ${date}`;
             
-            if (item.image) {
-                document.getElementById('itemImage').src = item.image;
+            if (item.image_url) {
+                document.getElementById('itemImage').src = item.image_url;
             } else {
                 document.getElementById('itemImage').style.backgroundColor = '#ddd';
                 document.getElementById('itemImage').style.height = '400px';
+                document.getElementById('itemImage').alt = 'No Image';
                 document.getElementById('itemImage').textContent = 'No Image';
             }
         } else {
