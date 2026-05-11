@@ -6,7 +6,7 @@ function loadItems() {
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
-        allItems = data.items || [];
+        allItems = data.items || [];  // ✅ Extract the items array
         displayItems(allItems);
     })
     .catch(error => {
