@@ -7,9 +7,9 @@ WORKDIR /var/www/html
 COPY public /var/www/html
 COPY api /var/www/html/api
 
-RUN mkdir -p /var/www/html/uploads && chmod 777 /var/www/html/uploads
-
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
+RUN mkdir -p /var/www/html/uploads && chown www-data:www-data /var/www/html/uploads && chmod 777 /var/www/html/uploads
 
 RUN a2enmod rewrite
 
