@@ -5,27 +5,22 @@ services:
     build: .
     ports:
       - "80:80"
-    volumes:
-      - ./public:/var/www/html
-      - ./api:/var/www/html/api
-    depends_on:
-      - db
     environment:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=LocalTrade_DB
-
+    depends_on:
+      - db
+  
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: LocalTrade_DB
-    ports:
-      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
       - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+      - db_data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -35,9 +30,6 @@ services:
       PMA_HOST: db
       PMA_USER: root
       PMA_PASSWORD: root
-      PMA_DB: LocalTrade_DB
-    depends_on:
-      - db
 
 volumes:
   db_data:
