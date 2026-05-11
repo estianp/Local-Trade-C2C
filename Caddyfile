@@ -1,3 +1,0 @@
-localtrade.live www.localtrade.live {
-    reverse_proxy web:80
-}
