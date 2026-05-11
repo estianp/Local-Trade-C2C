@@ -17,6 +17,8 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=LocalTrade_DB
+    networks:
+      - app-network
 
   db:
     image: mysql:8.0
@@ -28,6 +30,8 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+    networks:
+      - app-network
 
   phpmyadmin:
     image: phpmyadmin:latest
@@ -40,6 +44,11 @@ services:
       PMA_DB: LocalTrade_DB
     depends_on:
       - db
+    networks:
+      - app-network
+
+networks:
+  app-network:
 
 volumes:
   db_data:

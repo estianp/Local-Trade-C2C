@@ -25,6 +25,7 @@ document.getElementById("image").addEventListener("change", function(e) {
 document.getElementById("listingForm").addEventListener("submit", function(e) {
     e.preventDefault();
     
+    const category = document.getElementById("category").value;
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
     const price = document.getElementById("price").value;
@@ -32,7 +33,7 @@ document.getElementById("listingForm").addEventListener("submit", function(e) {
     fetch("api/create_listing.php", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({title, description, price, image: uploadedImage || null})
+        body: JSON.stringify({category, title, description, price, image: uploadedImage || null})
     })
     .then(response => response.json())
     .then(data => {

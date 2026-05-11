@@ -24,13 +24,28 @@
         </div>
     </header>
 
-    <section class="hero">
-        <h1>Welcome to LocalTrade</h1>
-        <p>Buy and sell with your community</p>
-        <a href="browse.html" class="btn btn-register" style="padding: 15px 30px; font-size: 16px;">Browse Items</a>
+    <section class="featured-section">
+        <h2 id="categoryTitle"></h2>
+        
+        <div class="carousel-container">
+            <button class="carousel-btn prev" id="prevBtn">❮</button>
+            
+            <div class="carousel-wrapper">
+                <div id="carouselItems" class="carousel-items"></div>
+            </div>
+            
+            <button class="carousel-btn next" id="nextBtn">❯</button>
+        </div>
+        
+        <div class="carousel-dots" id="dotsContainer"></div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="browse.html" class="btn btn-register">View All Items</a>
+        </div>
     </section>
 
     <script src="script.js"></script>
+    <script src="home.js"></script>
 </body>
 </html>
 

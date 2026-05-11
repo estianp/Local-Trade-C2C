@@ -12,17 +12,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
     
     $user_id = $_SESSION['user_id'];
+    $category_id = intval($data['category'] ?? 0);
     $title = trim($data['title'] ?? '');
     $description = trim($data['description'] ?? '');
     $price = floatval($data['price'] ?? 0);
     $image = !empty($data['image']) ? $data['image'] : null;
     
-    if (!$title || !$description || $price <= 0) {
+    if (!$category_id || !$title || !$description || $price <= 0) {
         echo json_encode(['success' => false, 'message' => 'All fields required with valid price']);
         exit;
     }
     
-    $sql = "INSERT INTO items (user_id, title, description, price, image) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO items (user_id, category_id, title, description, price, image) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     
-    $stmt->bind_param("issds", $user_id, $title, $description, $price, $image);
+    $stmt->bind_param("iissds", $user_id, $category_id, $title, $description, $price, $image);
     
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Item listed successfully']);

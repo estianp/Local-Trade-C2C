@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Items - LocalTrade</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header>
         <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">LocalTrade</a></div>
@@ -26,10 +28,31 @@
 
     <section class="browse-section">
         <h1>Browse Items</h1>
+
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="filterCategory">Filter by Category:</label>
+                <select id="filterCategory">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="sortBy">Sort by:</label>
+                <select id="sortBy">
+                    <option value="recent">Recent</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+
         <div id="itemsContainer" class="items-grid"></div>
     </section>
 
     <script src="script.js"></script>
+    <script src="categories.js"></script>
     <script src="browse.js"></script>
 </body>
+
 </html>

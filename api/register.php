@@ -5,8 +5,8 @@ require __DIR__ . '/config.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
     
-    $username = $data['username'] ?? '';
-    $email = $data['email'] ?? '';
+    $username = trim($data['username'] ?? '');
+    $email = trim($data['email'] ?? '');
     $password = $data['password'] ?? '';
     
     if (!$username || !$email || !$password) {
@@ -18,6 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
+    
+    if (!$stmt) {
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $conn->error]);
+        exit;
+    }
+    
     $stmt->bind_param("sss", $username, $email, $hashed_password);
     
     if ($stmt->execute()) {
