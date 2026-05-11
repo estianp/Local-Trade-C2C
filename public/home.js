@@ -24,8 +24,8 @@ function displayCarousel() {
         const itemEl = document.createElement('div');
         itemEl.className = `carousel-item ${index === 0 ? 'active' : ''}`;
 
-        const imageHtml = item.image 
-            ? `<img src="${item.image}" alt="${item.title}" class="carousel-image">`
+        const imageHtml = item.image_url 
+            ? `<img src="${item.image_url}" alt="${item.title}" class="carousel-image">`
             : `<div class="carousel-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
 
         itemEl.innerHTML = `
@@ -102,10 +102,8 @@ function resetAutoPlay() {
     startAutoPlay();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    checkSession();
-    loadFeaturedCategory();
+function stopAutoPlay() {
+    clearInterval(autoPlayInterval);
+}
 
-    document.getElementById('nextBtn').addEventListener('click', nextSlide);
-    document.getElementById('prevBtn').addEventListener('click', prevSlide);
-});
+document.addEventListener('DOMContentLoaded', loadFeaturedCategory);

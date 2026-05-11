@@ -6,7 +6,7 @@ function loadItems() {
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
-        allItems = data || [];
+        allItems = data.items || [];
         displayItems(allItems);
     })
     .catch(error => {
@@ -28,8 +28,8 @@ function displayItems(items) {
         const itemEl = document.createElement('div');
         itemEl.className = 'item-card';
         
-        const imageHtml = item.image 
-            ? `<img src="${item.image}" alt="${item.title}" class="item-image">`
+        const imageHtml = item.image_url 
+            ? `<img src="${item.image_url}" alt="${item.title}" class="item-image">`
             : `<div class="item-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
         
         itemEl.innerHTML = `
@@ -42,7 +42,6 @@ function displayItems(items) {
         `;
         container.appendChild(itemEl);
         
-        // For img tags
         const img = itemEl.querySelector('img');
         if (img) {
             img.loading = 'lazy';
@@ -56,12 +55,10 @@ function filterAndSort() {
     
     let filtered = allItems;
     
-    // Filter by category
     if (selectedCategory) {
         filtered = allItems.filter(item => String(item.category_id) === String(selectedCategory));
     }
     
-    // Sort
     let sorted = [...filtered];
     
     switch(sortType) {
@@ -81,10 +78,9 @@ function filterAndSort() {
     displayItems(sorted);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    checkSession();
+document.addEventListener('DOMContentLoaded', function() {
     loadItems();
-    
+    loadCategoryDropdown();
     document.getElementById('filterCategory').addEventListener('change', filterAndSort);
     document.getElementById('sortBy').addEventListener('change', filterAndSort);
 });
