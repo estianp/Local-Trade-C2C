@@ -27,8 +27,4 @@ if ($result->num_rows > 0) {
 } else {
     echo json_encode(['success' => false, 'message' => 'No categories with items']);
 }
-
-if (item.image_url) {
-    document.getElementById('itemImage').src = item.image_url;
-}
 ?>
