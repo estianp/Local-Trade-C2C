@@ -15,7 +15,7 @@ services:
       - ./public:/var/www/html/public
       - ./api:/var/www/html/api
       - ./uploads:/var/www/html/uploads
-      - ./sessions:/var/www/html/sessions
+      - sessions_data:/var/lib/php/sessions
     depends_on:
       - db
   
@@ -39,4 +39,5 @@ services:
 
 volumes:
   db_data:
+  sessions_data:
 
