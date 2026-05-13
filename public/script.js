@@ -10,7 +10,9 @@ function switchTab(tabName) {
 }
 
 function checkSession() {
-    fetch("api/check_session.php")
+    fetch("api/check_session.php", {
+        credentials: 'include'
+    })
     .then(response => response.json())
     .then(data => {
         const signupBtn = document.getElementById("signupBtn");
@@ -37,7 +39,6 @@ function checkSession() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Clear all error messages on page load
     const errors = document.querySelectorAll('.error');
     errors.forEach(error => {
         error.textContent = '';
@@ -49,12 +50,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 if (document.getElementById("signoutBtn")) {
     document.getElementById("signoutBtn").addEventListener("click", function() {
-        fetch("api/logout.php", {method: "POST"})
+        fetch("api/logout.php", {
+            credentials: 'include'
+        })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
-                window.location.href = "index.html";
-            }
+            window.location.href = "index.html";
         });
     });
 }
