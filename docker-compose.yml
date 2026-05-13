@@ -10,12 +10,11 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - DB_NAME=LocalTrade_DB
-      - PHP_SESSION_SAVE_PATH=/var/www/html/sessions
     volumes:
       - ./public:/var/www/html/public
       - ./api:/var/www/html/api
       - ./uploads:/var/www/html/uploads
-      - sessions_data:/var/lib/php/sessions
+      - ./sessions:/var/lib/php/sessions
     depends_on:
       - db
   
@@ -39,5 +38,4 @@ services:
 
 volumes:
   db_data:
-  sessions_data:
 
