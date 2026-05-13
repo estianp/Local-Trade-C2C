@@ -10,6 +10,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-header("Cache-Control: max-age=3600");
-header("Pragma: public");
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 ?>

@@ -1,5 +1,7 @@
 <?php
 header('Content-Type: application/json');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 require __DIR__ . '/config.php';
 
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;

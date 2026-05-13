@@ -1,5 +1,7 @@
 <?php
 header('Content-Type: application/json');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 require __DIR__ . '/config.php';
 
 $sql = "SELECT DISTINCT items.category_id, categories.name FROM items JOIN categories ON items.category_id = categories.id WHERE categories.parent_id IS NOT NULL ORDER BY RAND() LIMIT 1";

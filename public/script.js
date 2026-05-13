@@ -11,7 +11,8 @@ function switchTab(tabName) {
 
 function checkSession() {
     fetch("api/check_session.php", {
-        credentials: 'include'
+        credentials: 'include',
+        cache: 'no-store'
     })
     .then(response => response.json())
     .then(data => {
@@ -51,7 +52,8 @@ document.addEventListener("DOMContentLoaded", function() {
 if (document.getElementById("signoutBtn")) {
     document.getElementById("signoutBtn").addEventListener("click", function() {
         fetch("api/logout.php", {
-            credentials: 'include'
+            credentials: 'include',
+            cache: 'no-store'
         })
         .then(response => response.json())
         .then(data => {
@@ -70,13 +72,21 @@ if (document.getElementById("loginForm")) {
         fetch("api/login.php", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
+            credentials: 'include',
+            cache: 'no-store',
             body: JSON.stringify({username, password})
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Login successful!");
-                window.location.href = "index.html";
+                errorEl.textContent = "";
+                errorEl.classList.remove("show");
+                // Update UI immediately
+                checkSession();
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 500);
             } else {
                 errorEl.textContent = data.message;
                 errorEl.classList.add("show");
