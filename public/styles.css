@@ -501,7 +501,7 @@ header {
 .filter-controls {
     margin-bottom: 30px;
     display: flex;
-    gap: 30px;
+    gap: 15px;
     flex-wrap: wrap;
 }
 
@@ -536,6 +536,25 @@ header {
     outline: none;
     border-color: #007bff;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.filter-group input[type="text"] {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    width: 200px;
+}
+
+.filter-group input[type="text"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.filter-group input[type="text"]::placeholder {
+    color: #999;
 }
 
 .featured-section {

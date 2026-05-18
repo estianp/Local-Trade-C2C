@@ -6,7 +6,7 @@ function loadItems() {
     fetch('api/get_items.php')
     .then(response => response.json())
     .then(data => {
-        allItems = data.items || [];  // ✅ Extract the items array
+        allItems = data.items || [];
         displayItems(allItems);
     })
     .catch(error => {
@@ -50,13 +50,18 @@ function displayItems(items) {
 }
 
 function filterAndSort() {
+    const searchQuery = document.getElementById('searchInput').value.toLowerCase();
     const selectedCategory = document.getElementById('filterCategory').value;
     const sortType = document.getElementById('sortBy').value;
     
     let filtered = allItems;
     
     if (selectedCategory) {
-        filtered = allItems.filter(item => String(item.category_id) === String(selectedCategory));
+        filtered = filtered.filter(item => String(item.category_id) === String(selectedCategory));
+    }
+    
+    if (searchQuery) {
+        filtered = filtered.filter(item => item.title.toLowerCase().includes(searchQuery));
     }
     
     let sorted = [...filtered];
@@ -83,4 +88,5 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCategoryDropdown();
     document.getElementById('filterCategory').addEventListener('change', filterAndSort);
     document.getElementById('sortBy').addEventListener('change', filterAndSort);
+    document.getElementById('searchInput').addEventListener('input', filterAndSort);
 });
