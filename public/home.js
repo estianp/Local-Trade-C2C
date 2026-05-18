@@ -106,4 +106,8 @@ function stopAutoPlay() {
     clearInterval(autoPlayInterval);
 }
 
-document.addEventListener('DOMContentLoaded', loadFeaturedCategory);
+document.addEventListener('DOMContentLoaded', function() {
+    loadFeaturedCategory();
+    document.getElementById('prevBtn').addEventListener('click', prevSlide);
+    document.getElementById('nextBtn').addEventListener('click', nextSlide);
+});
