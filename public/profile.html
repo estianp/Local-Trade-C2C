@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - LocalTrade</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">LocalTrade</a></div>
+        <nav class="nav-menu">
+            <a href="browse.html" class="nav-link">Buy</a>
+            <a href="sell.html" class="nav-link" id="sellLink" style="display: none;">Sell</a>
+        </nav>
+        <div class="auth-buttons">
+            <div id="signupBtn">
+                <a href="signup.html" class="btn btn-register">Sign Up</a>
+            </div>
+            <div id="userProfile" style="display: none; display: flex; align-items: center; gap: 15px;">
+                <span id="username" style="cursor: pointer; text-decoration: underline;"></span>
+                <button id="signoutBtn" class="btn btn-login">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="profile-section">
+        <div class="profile-container">
+            <div class="profile-tabs">
+                <button class="tab-btn active" data-tab="edit-profile">Edit Profile</button>
+                <button class="tab-btn" data-tab="my-listings">My Listings</button>
+            </div>
+
+            <div id="edit-profile" class="tab-content active">
+                <h2>Edit Profile</h2>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="editUsername">Username:</label>
+                        <input type="text" id="editUsername" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" id="editEmail" disabled>
+                    </div>
+
+                    <button type="submit" class="btn btn-register">Save Changes</button>
+                    <p id="profileError" class="error"></p>
+                    <p id="profileSuccess" style="color: green; display: none;"></p>
+                </form>
+            </div>
+
+            <div id="my-listings" class="tab-content">
+                <h2>My Listings</h2>
+                <div id="userListingsContainer" class="items-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="profile.js"></script>
+</body>
+
+</html>

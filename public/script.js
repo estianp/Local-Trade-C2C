@@ -24,7 +24,12 @@ function checkSession() {
             if (signupBtn) signupBtn.style.display = "none";
             if (userProfile) {
                 userProfile.style.display = "flex";
-                document.getElementById("username").textContent = data.username;
+                const usernameEl = document.getElementById("username");
+                usernameEl.textContent = data.username;
+                usernameEl.style.cursor = "pointer";
+                usernameEl.addEventListener("click", () => {
+                    window.location.href = "profile.html";
+                });
             }
             if (sellLink) sellLink.style.display = "block";
         } else {
