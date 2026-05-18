@@ -8,7 +8,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $limit = 12;
 $offset = ($page - 1) * $limit;
 
-$sql = "SELECT items.id, items.title, items.description, items.price, items.image_filename, users.username, items.category_id, categories.name AS category, items.created_at FROM items JOIN users ON items.user_id = users.id JOIN categories ON items.category_id = categories.id ORDER BY items.created_at DESC LIMIT ? OFFSET ?";
+$sql = "SELECT items.id, items.title, items.description, items.price, items.image_filename, items.is_sold, users.username, items.category_id, categories.name AS category, items.created_at FROM items JOIN users ON items.user_id = users.id JOIN categories ON items.category_id = categories.id ORDER BY items.created_at DESC LIMIT ? OFFSET ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $limit, $offset);
 $stmt->execute();

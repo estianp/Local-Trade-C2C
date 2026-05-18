@@ -28,8 +28,13 @@ function displayCarousel() {
             ? `<img src="${item.image_url}" alt="${item.title}" class="carousel-image">`
             : `<div class="carousel-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
 
+        const soldStamp = item.is_sold ? '<div class="sold-stamp">SOLD</div>' : '';
+
         itemEl.innerHTML = `
-            ${imageHtml}
+            <div class="carousel-image-wrapper">
+                ${imageHtml}
+                ${soldStamp}
+            </div>
             <div class="carousel-item-info">
                 <h3>${item.title}</h3>
                 <p class="carousel-description">${item.description.substring(0, 80)}...</p>

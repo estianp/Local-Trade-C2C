@@ -12,7 +12,7 @@ if ($result->num_rows > 0) {
     $category_id = $row['category_id'];
     $category_name = $row['name'];
     
-    $itemsSql = "SELECT items.id, items.title, items.description, items.price, items.image_filename, users.username FROM items JOIN users ON items.user_id = users.id WHERE items.category_id = ? ORDER BY items.created_at DESC LIMIT 6";
+    $itemsSql = "SELECT items.id, items.title, items.description, items.price, items.image_filename, items.is_sold, users.username FROM items JOIN users ON items.user_id = users.id WHERE items.category_id = ? ORDER BY items.created_at DESC LIMIT 6";
     $stmt = $conn->prepare($itemsSql);
     $stmt->bind_param("i", $category_id);
     $stmt->execute();

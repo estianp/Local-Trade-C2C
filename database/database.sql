@@ -25,12 +25,17 @@ CREATE TABLE items (
     description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     image_filename VARCHAR(255),
+    is_sold BOOLEAN DEFAULT FALSE,
+    sold_to INT DEFAULT NULL,
+    sold_at TIMESTAMP DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id),
+    FOREIGN KEY (sold_to) REFERENCES users(id) ON DELETE SET NULL,
     INDEX idx_category_id (category_id),
     INDEX idx_user_id (user_id),
-    INDEX idx_created_at (created_at)
+    INDEX idx_created_at (created_at),
+    INDEX idx_is_sold (is_sold)
 );
 
 INSERT INTO categories (name, parent_id) VALUES 

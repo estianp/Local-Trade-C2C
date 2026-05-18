@@ -32,8 +32,13 @@ function displayItems(items) {
             ? `<img src="${item.image_url}" alt="${item.title}" class="item-image">`
             : `<div class="item-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
         
+        const soldStamp = item.is_sold ? '<div class="sold-stamp">SOLD</div>' : '';
+        
         itemEl.innerHTML = `
-            ${imageHtml}
+            <div class="item-image-wrapper">
+                ${imageHtml}
+                ${soldStamp}
+            </div>
             <h3>${item.title}</h3>
             <p class="item-description">${item.description}</p>
             <p class="item-seller">Seller: ${item.username}</p>

@@ -28,32 +28,39 @@ function loadUserListings() {
 
         data.listings.forEach(item => {
             const itemEl = document.createElement('div');
-            itemEl.className = 'item-card';
+            itemEl.className = 'listing-card';
 
             const imageHtml = item.image_url 
-                ? `<img src="${item.image_url}" alt="${item.title}" class="item-image">`
-                : `<div class="item-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
+                ? `<img src="${item.image_url}" alt="${item.title}" class="listing-image">`
+                : `<div class="listing-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
 
             itemEl.innerHTML = `
-                ${imageHtml}
-                <h3>${item.title}</h3>
-                <p class="item-description">${item.description}</p>
-                <p class="item-price">R${parseFloat(item.price).toFixed(2)}</p>
-                <div style="display: flex; gap: 10px;">
-                    <a href="item.html?id=${item.id}" class="btn btn-register" style="flex: 1; text-align: center;">View</a>
-                    <button class="btn btn-login" onclick="deleteListingPrompt(${item.id})" style="flex: 1;">Delete</button>
+                <div class="listing-image-wrapper">
+                    ${imageHtml}
+                </div>
+                <div class="listing-details">
+                    <h3>${item.title}</h3>
+                    <p class="listing-description">${item.description}</p>
+                    <p class="listing-price">R${parseFloat(item.price).toFixed(2)}</p>
+                    <div class="listing-actions">
+                        <a href="item.html?id=${item.id}" class="btn btn-register">View</a>
+                        <button type="button" class="btn btn-login delete-btn" data-id="${item.id}">Delete</button>
+                    </div>
                 </div>
             `;
             container.appendChild(itemEl);
         });
+
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const listingId = this.getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this listing?')) {
+                    deleteListing(listingId);
+                }
+            });
+        });
     })
     .catch(error => console.error('Error loading listings:', error));
-}
-
-function deleteListingPrompt(listingId) {
-    if (confirm('Are you sure you want to delete this listing?')) {
-        deleteListing(listingId);
-    }
 }
 
 function deleteListing(listingId) {
@@ -71,7 +78,10 @@ function deleteListing(listingId) {
             alert('Error deleting listing: ' + data.message);
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        alert('Error deleting listing: ' + error.message);
+        console.error('Error:', error);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

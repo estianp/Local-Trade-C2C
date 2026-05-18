@@ -44,14 +44,97 @@
                     </div>
                     
                     <p id="itemDate" class="item-date"></p>
+                    <p id="itemStatus" class="item-status"></p>
                     
-                    <button class="btn btn-register" style="width: 100%; padding: 15px; margin-top: 20px;">Buy Now</button>
+                    <button id="buyNowBtn" type="button" class="btn btn-register" style="width: 100%; padding: 15px; margin-top: 20px;">Buy Now</button>
                 </div>
             </div>
         </div>
     </section>
 
+    <div id="paymentModal" class="payment-modal" style="display: none;">
+        <div class="payment-modal-content">
+            <div class="payment-header">
+                <h2>Payment Gateway</h2>
+                <button type="button" class="close-payment-btn">&times;</button>
+            </div>
+            
+            <div class="payment-body">
+                <div class="payment-summary">
+                    <h3 id="paymentItemTitle"></h3>
+                    <p>Total Amount: <strong id="paymentAmount"></strong></p>
+                </div>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardName">Cardholder Name:</label>
+                        <input type="text" id="cardName" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number:</label>
+                        <input type="text" id="cardNumber" inputmode="numeric" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cardExpiry">Expiry Date:</label>
+                            <input type="text" id="cardExpiry" inputmode="numeric" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardCVV">CVV:</label>
+                            <input type="password" id="cardCVV" inputmode="numeric" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billingZip">Billing Zip Code:</label>
+                        <input type="text" id="billingZip" inputmode="numeric" placeholder="12345" required>
+                    </div>
+
+                    <p id="paymentError" class="error"></p>
+
+                    <button type="submit" class="btn btn-register" style="width: 100%; padding: 12px; margin-top: 20px;">Complete Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="payment-modal" style="display: none;">
+        <div class="payment-modal-content success-content">
+            <div class="success-body">
+                <div class="success-icon">✓</div>
+                <h2>Payment Successful!</h2>
+                <p class="success-message">Your purchase has been confirmed</p>
+                
+                <div class="success-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Item:</span>
+                        <span class="detail-value" id="successItemName"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Amount Paid:</span>
+                        <span class="detail-value" id="successAmount"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Transaction ID:</span>
+                        <span class="detail-value" id="successTransactionId"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date & Time:</span>
+                        <span class="detail-value" id="successDateTime"></span>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px; color: #666; font-size: 14px;">A confirmation email has been sent to your registered email address.</p>
+                
+                <button type="button" class="btn btn-register" style="width: 100%; padding: 12px; margin-top: 20px;" onclick="closeSuccessModal()">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="item.js"></script>
 </body>
+
 </html>
