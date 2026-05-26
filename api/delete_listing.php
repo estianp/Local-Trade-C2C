@@ -1,22 +1,35 @@
 <?php
+header('Content-Type: application/json');
 session_start();
-require 'config.php';
+require __DIR__ . '/config.php';
 
-if (!isset($_SESSION['user_id'])) {
-	echo json_encode(['success' => false, 'message' => 'Not logged in']);
-	exit;
+// Check if user is admin
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+    exit;
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
-$listing_id = $data['id'];
-$user_id = $_SESSION['user_id'];
-
-$stmt = $conn->prepare("DELETE FROM items WHERE id = ? AND user_id = ?");
-$stmt->bind_param("ii", $listing_id, $user_id);
-
-if ($stmt->execute()) {
-	echo json_encode(['success' => true, 'message' => 'Listing deleted']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    
+    $item_id = intval($data['item_id'] ?? 0);
+    
+    if (!$item_id) {
+        echo json_encode(['success' => false, 'message' => 'Invalid item ID']);
+        exit;
+    }
+    
+    $sql = "DELETE FROM items WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $item_id);
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Listing deleted']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Database error']);
+    }
+    $stmt->close();
 } else {
-	echo json_encode(['success' => false, 'message' => 'Delete failed']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
 ?>

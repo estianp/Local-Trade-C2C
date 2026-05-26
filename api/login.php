@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit;
     }
     
-    $sql = "SELECT id, password FROM users WHERE username = ?";
+    $sql = "SELECT id, password, is_admin FROM users WHERE username = ?";
     $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
@@ -33,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (password_verify($password, $row['password'])) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['username'] = $username;
-            echo json_encode(['success' => true, 'message' => 'Login successful']);
+            $_SESSION['is_admin'] = (bool)$row['is_admin'];
+            echo json_encode(['success' => true, 'message' => 'Login successful', 'is_admin' => (bool)$row['is_admin']]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid password']);
         }

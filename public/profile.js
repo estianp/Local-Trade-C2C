@@ -84,9 +84,25 @@ function deleteListing(listingId) {
     });
 }
 
+// Check if user is admin and show admin tab
+function checkAdminStatus() {
+    fetch("api/check_session.php", {
+        credentials: 'include',
+        cache: 'no-store'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.logged_in && data.is_admin) {
+            document.getElementById("adminTabBtn").style.display = "block";
+        }
+    })
+    .catch(error => console.error('Error checking admin status:', error));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     loadUserProfile();
     loadUserListings();
+    checkAdminStatus();
 
     const tabs = document.querySelectorAll('.tab-btn');
     tabs.forEach(tab => {

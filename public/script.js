@@ -86,12 +86,17 @@ if (document.getElementById("loginForm")) {
             if (data.success) {
                 errorEl.textContent = "";
                 errorEl.classList.remove("show");
-                // Update UI immediately
-                checkSession();
-                // Redirect after a short delay
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 500);
+                // Check if admin and redirect accordingly
+                if (data.is_admin) {
+                    setTimeout(() => {
+                        window.location.href = "admin.html";
+                    }, 500);
+                } else {
+                    checkSession();
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 500);
+                }
             } else {
                 errorEl.textContent = data.message;
                 errorEl.classList.add("show");

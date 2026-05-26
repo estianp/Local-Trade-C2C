@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Dashboard - LocalTrade</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+	<header>
+		<div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">LocalTrade</a></div>
+		<nav class="nav-menu">
+			<a href="browse.html" class="nav-link">Buy</a>
+			<a href="sell.html" class="nav-link">Sell</a>
+		</nav>
+		<div class="auth-buttons">
+			<div id="userProfile" style="display: flex; align-items: center; gap: 15px;">
+				<span id="username"></span>
+				<button id="signoutBtn" class="btn btn-login">Sign Out</button>
+			</div>
+		</div>
+	</header>
+
+	<div class="admin-container">
+		<aside class="admin-sidebar">
+			<h2>Admin Panel</h2>
+			<nav class="admin-nav">
+				<button class="admin-nav-btn active" data-tab="users">Users</button>
+				<button class="admin-nav-btn" data-tab="listings">Listings</button>
+			</nav>
+		</aside>
+
+		<main class="admin-content">
+			<!-- Users Tab -->
+			<div id="users" class="admin-tab active">
+				<h2>Manage Users</h2>
+				<div class="admin-stats">
+					<div class="stat-card">
+						<span class="stat-label">Total Users</span>
+						<span class="stat-value" id="totalUsers">0</span>
+					</div>
+					<div class="stat-card">
+						<span class="stat-label">Admin Users</span>
+						<span class="stat-value" id="adminUsers">0</span>
+					</div>
+				</div>
+				<div class="table-container">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Username</th>
+								<th>Email</th>
+								<th>Created</th>
+								<th>Admin</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody id="usersTableBody">
+							<tr><td colspan="6" style="text-align: center; padding: 20px;">Loading...</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Listings Tab -->
+			<div id="listings" class="admin-tab">
+				<h2>Manage Listings</h2>
+				<div class="admin-stats">
+					<div class="stat-card">
+						<span class="stat-label">Total Listings</span>
+						<span class="stat-value" id="totalListings">0</span>
+					</div>
+					<div class="stat-card">
+						<span class="stat-label">Active Listings</span>
+						<span class="stat-value" id="activeListings">0</span>
+					</div>
+				</div>
+				<div class="table-container">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Title</th>
+								<th>Category</th>
+								<th>Seller</th>
+								<th>Price</th>
+								<th>Status</th>
+								<th>Created</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody id="listingsTableBody">
+							<tr><td colspan="8" style="text-align: center; padding: 20px;">Loading...</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<!-- Modal for editing user -->
+	<div id="userModal" class="modal" style="display: none;">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2>Edit User</h2>
+			<form id="editUserForm">
+				<div class="form-group">
+					<label for="editUserId">User ID:</label>
+					<input type="text" id="editUserId" disabled>
+				</div>
+				<div class="form-group">
+					<label for="editUsername">Username:</label>
+					<input type="text" id="editUsername" disabled>
+				</div>
+				<div class="form-group">
+					<label for="editEmail">Email:</label>
+					<input type="email" id="editEmail" disabled>
+				</div>
+				<div class="form-group">
+					<label>
+						<input type="checkbox" id="editIsAdmin">
+						Admin User
+					</label>
+				</div>
+				<div class="modal-buttons">
+					<button type="submit" class="btn btn-register">Save Changes</button>
+					<button type="button" class="btn btn-delete" id="deleteUserBtn">Delete User</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal for editing listing -->
+	<div id="listingModal" class="modal" style="display: none;">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2>Edit Listing</h2>
+			<form id="editListingForm">
+				<div class="form-group">
+					<label for="editItemId">Item ID:</label>
+					<input type="text" id="editItemId" disabled>
+				</div>
+				<div class="form-group">
+					<label for="editItemTitle">Title:</label>
+					<input type="text" id="editItemTitle" disabled>
+				</div>
+				<div class="form-group">
+					<label for="editItemSeller">Seller:</label>
+					<input type="text" id="editItemSeller" disabled>
+				</div>
+				<div class="form-group">
+					<label>
+						<input type="checkbox" id="editItemSold">
+						Mark as Sold
+					</label>
+				</div>
+				<div class="modal-buttons">
+					<button type="submit" class="btn btn-register">Save Changes</button>
+					<button type="button" class="btn btn-delete" id="deleteListingBtn">Delete Listing</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+	<script src="admin.js"></script>
+</body>
+</html>
