@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - LocalTrade</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -38,6 +39,10 @@
                 <form id="loginForm">
                     <input type="text" placeholder="Username" id="loginUsername" required>
                     <input type="password" placeholder="Password" id="loginPassword" required>
+
+                    <!-- Turnstile Captcha for Login -->
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAADbG5H168FkEmQ8i" data-theme="light" style="margin: 15px 0;"></div>
+
                     <button type="submit" class="btn btn-register" style="width: 100%;">Login</button>
                 </form>
                 <p id="loginError" class="error"></p>
@@ -49,6 +54,10 @@
                     <input type="text" placeholder="Username" id="registerUsername" required>
                     <input type="email" placeholder="Email" id="registerEmail" required>
                     <input type="password" placeholder="Password" id="registerPassword" required>
+
+                    <!-- Turnstile Captcha for Register -->
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAADbG5H168FkEmQ8i" data-theme="light" style="margin: 15px 0;"></div>
+
                     <button type="submit" class="btn btn-register" style="width: 100%;">Register</button>
                 </form>
                 <p id="registerError" class="error"></p>
@@ -57,6 +66,7 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="turnstile.js"></script>
 </body>
 
 </html>

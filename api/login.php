@@ -10,9 +10,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $username = trim($data['username'] ?? '');
     $password = $data['password'] ?? '';
+    $captcha_token = $data['captcha_token'] ?? '';
     
     if (!$username || !$password) {
         echo json_encode(['success' => false, 'message' => 'Username and password required']);
+        exit;
+    }
+    
+    // Verify Turnstile token
+    if (!$captcha_token) {
+        echo json_encode(['success' => false, 'message' => 'Captcha verification failed']);
+        exit;
+    }
+    
+    $verify_response = verify_turnstile_token($captcha_token);
+    if (!$verify_response['success']) {
+        echo json_encode(['success' => false, 'message' => 'Captcha verification failed']);
         exit;
     }
     
@@ -45,5 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+}
+
+function verify_turnstile_token($token) {
+    $secret_key = '0x4AAAAAADbG5GsYf9Tj-cxHReqUWENXXD4';
+    
+    $response = file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, stream_context_create([
+        'http' => [
+            'method' => 'POST',
+            'header' => 'Content-Type: application/json',
+            'content' => json_encode([
+                'secret' => $secret_key,
+                'response' => $token
+            ])
+        ]
+    ]));
+    
+    return json_decode($response, true);
 }
 ?>
