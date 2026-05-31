@@ -47,6 +47,32 @@
                     <p id="itemStatus" class="item-status"></p>
                     
                     <button id="buyNowBtn" type="button" class="btn btn-register" style="width: 100%; padding: 15px; margin-top: 20px;">Buy Now</button>
+                    
+                    <div id="paymentSection" style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #ddd; display: none;">
+                        <h3>Payment Details</h3>
+                        <div id="savedPaymentInfo" style="margin-bottom: 20px;"></div>
+                        <form id="purchasePaymentForm" style="display: none;">
+                            <div class="form-group">
+                                <label for="purchaseCardHolder">Card Holder Name:</label>
+                                <input type="text" id="purchaseCardHolder" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="purchaseCardNumber">Card Number:</label>
+                                <input type="text" id="purchaseCardNumber" placeholder="1234 5678 9012 3456" required>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="purchaseExpiry">Expiry (MM/YY):</label>
+                                    <input type="text" id="purchaseExpiry" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="purchaseCvv">CVV:</label>
+                                    <input type="text" id="purchaseCvv" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-register" style="width: 100%;">Complete Purchase</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

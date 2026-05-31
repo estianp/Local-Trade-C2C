@@ -39,6 +39,18 @@ CREATE TABLE items (
     INDEX idx_is_sold (is_sold)
 );
 
+CREATE TABLE payment_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    card_holder_name VARCHAR(255) NOT NULL,
+    card_number VARCHAR(255) NOT NULL,
+    expiry_date VARCHAR(7) NOT NULL,
+    cvv VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 INSERT INTO categories (name, parent_id) VALUES 
 ('Electronics', NULL),
 ('Mobile Phones', 1),

@@ -30,9 +30,10 @@
         <div class="profile-container">
             <div class="profile-tabs">
                 <button class="tab-btn active" data-tab="edit-profile">Edit Profile</button>
+                <button class="tab-btn" data-tab="payment-details">Payment Details</button>
                 <button class="tab-btn" data-tab="my-listings">My Listings</button>
                 <button class="tab-btn" data-tab="admin-portal" id="adminTabBtn" style="display: none;">
-                   Admin Portal
+                    Admin Portal
                 </button>
             </div>
 
@@ -55,6 +56,41 @@
                 </form>
             </div>
 
+            <div id="payment-details" class="tab-content">
+                <h2>Payment Details</h2>
+                <div id="paymentStatus" style="margin-bottom: 20px;"></div>
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardHolderName">Card Holder Name:</label>
+                        <input type="text" id="cardHolderName" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number:</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required maxlength="19">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date (MM/YY):</label>
+                            <input type="text" id="expiryDate" placeholder="12/25" required maxlength="5">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cvv">CVV:</label>
+                            <input type="text" id="cvv" placeholder="123" required maxlength="4">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-register">Save Payment Details</button>
+                        <button type="button" class="btn btn-delete" id="deletePaymentBtn" style="display: none;">Delete Payment Details</button>
+                    </div>
+                    <p id="paymentError" class="error"></p>
+                    <p id="paymentSuccess" style="color: green; display: none;"></p>
+                </form>
+            </div>
+
             <div id="my-listings" class="tab-content">
                 <h2>My Listings</h2>
                 <div id="userListingsContainer" class="items-grid"></div>
@@ -72,6 +108,7 @@
 
     <script src="script.js"></script>
     <script src="profile.js"></script>
+    <script src="payment.js"></script>
 </body>
 
 </html>

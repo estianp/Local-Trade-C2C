@@ -164,4 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('paymentModal');
         if (e.target === modal) closePaymentModal();
     });
+    
+    document.getElementById('buyNowBtn').addEventListener('click', function() {
+        const itemId = new URLSearchParams(window.location.search).get('id');
+        window.location.href = `checkout.html?id=${itemId}`;
+    });
 });

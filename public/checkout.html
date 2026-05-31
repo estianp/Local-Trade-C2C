@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - LocalTrade</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit;">LocalTrade</a></div>
+        <nav class="nav-menu">
+            <a href="browse.html" class="nav-link">Buy</a>
+            <a href="sell.html" class="nav-link" id="sellLink" style="display: none;">Sell</a>
+        </nav>
+        <div class="auth-buttons">
+            <div id="userProfile" style="display: flex; align-items: center; gap: 15px;">
+                <span id="username"></span>
+                <button id="signoutBtn" class="btn btn-login">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="checkout-section">
+        <div class="checkout-container">
+            <h1>Checkout</h1>
+
+            <div class="checkout-grid">
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <h2>Order Summary</h2>
+                    <div class="order-item">
+                        <img id="itemImage" src="" alt="Item" class="order-item-image">
+                        <div class="order-item-details">
+                            <h3 id="itemTitle"></h3>
+                            <p id="itemSeller" class="order-seller"></p>
+                            <p id="itemDescription" class="order-description"></p>
+                        </div>
+                    </div>
+
+                    <div class="order-total">
+                        <div class="total-row">
+                            <span>Item Price:</span>
+                            <span id="itemPrice" class="price"></span>
+                        </div>
+                        <div class="total-row">
+                            <span>Shipping:</span>
+                            <span class="price">R0.00</span>
+                        </div>
+                        <div class="total-row total-amount">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount" class="price"></span>
+                        </div>
+                    </div>
+
+                    <a href="javascript:history.back()" class="btn btn-login" style="width: 100%; text-align: center; margin-top: 20px;">
+                        ← Back to Item
+                    </a>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-form-section">
+                    <h2>Payment Details</h2>
+                    
+                    <!-- Saved Payment Option -->
+                    <div id="savedPaymentContainer" style="display: none; margin-bottom: 30px;">
+                        <div class="saved-payment-card">
+                            <h3>Use Saved Payment Method</h3>
+                            <div id="savedPaymentInfo" class="payment-info"></div>
+                            <button type="button" class="btn btn-register" id="useSavedBtn" style="width: 100%; margin-top: 15px;">
+                                Use This Card
+                            </button>
+                        </div>
+
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                    </div>
+
+                    <!-- Payment Form -->
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label for="cardHolder">Card Holder Name:</label>
+                            <input type="text" id="cardHolder" placeholder="John Doe" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number:</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required maxlength="19">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date (MM/YY):</label>
+                                <input type="text" id="expiryDate" placeholder="12/25" required maxlength="5">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cvv">CVV:</label>
+                                <input type="text" id="cvv" placeholder="123" required maxlength="4">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zipCode">Billing Zip Code:</label>
+                            <input type="text" id="zipCode" placeholder="12345" required>
+                        </div>
+
+                        <div id="checkoutError" class="error" style="display: none;"></div>
+                        <div id="checkoutSuccess" style="color: green; display: none;"></div>
+
+                        <button type="submit" class="btn btn-register" style="width: 100%; padding: 15px; margin-top: 20px; font-size: 16px;">
+                            Complete Purchase
+                        </button>
+                    </form>
+
+                    <label style="display: flex; align-items: center; gap: 10px; margin-top: 20px; color: #666;">
+                        <input type="checkbox" id="savePayment">
+                        Save this card for future purchases
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="checkout.js"></script>
+</body>
+</html>
