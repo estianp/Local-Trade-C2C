@@ -123,35 +123,38 @@ function loadUsers() {
 }
 
 function displayUsers(users) {
-	const tbody = document.getElementById("usersTableBody");
-	tbody.innerHTML = '';
-
-	let adminCount = 0;
-
-	users.forEach(user => {
-		if (user.is_admin) adminCount++;
-
-		const row = document.createElement("tr");
-		const createdDate = new Date(user.created_at).toLocaleDateString();
-		const adminBadge = user.is_admin ? '<span class="admin-badge">Admin</span>' : '';
-
-		row.innerHTML = `
-			<td>${user.id}</td>
-			<td>${user.username}</td>
-			<td>${user.email}</td>
-			<td>${createdDate}</td>
-			<td>${adminBadge}</td>
-			<td>
-				<div class="action-buttons">
-					<button class="btn-sm btn-edit" onclick="editUser(${user.id}, '${user.username}', '${user.email}', ${user.is_admin})">Edit</button>
-				</div>
-			</td>
-		`;
-		tbody.appendChild(row);
-	});
-
-	document.getElementById("totalUsers").textContent = users.length;
-	document.getElementById("adminUsers").textContent = adminCount;
+    const tbody = document.getElementById("usersTableBody");
+    tbody.innerHTML = '';
+    
+    let adminCount = 0;
+    
+    users.forEach(user => {
+        // Convert is_admin to boolean
+        const isAdmin = user.is_admin == 1 || user.is_admin === true;
+        
+        if (isAdmin) adminCount++;
+        
+        const row = document.createElement("tr");
+        const createdDate = new Date(user.created_at).toLocaleDateString();
+        const adminBadge = isAdmin ? '<span class="admin-badge">Admin</span>' : '';
+        
+        row.innerHTML = `
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td>${user.email}</td>
+            <td>${createdDate}</td>
+            <td>${adminBadge}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn-sm btn-edit" onclick="editUser(${user.id}, '${user.username}', '${user.email}', ${isAdmin})">Edit</button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.getElementById("totalUsers").textContent = users.length;
+    document.getElementById("adminUsers").textContent = adminCount;
 }
 
 function editUser(userId, username, email, isAdmin) {
@@ -226,39 +229,42 @@ function loadListings() {
 }
 
 function displayListings(listings) {
-	const tbody = document.getElementById("listingsTableBody");
-	tbody.innerHTML = '';
-
-	let activeCount = 0;
-
-	listings.forEach(listing => {
-		if (!listing.is_sold) activeCount++;
-
-		const row = document.createElement("tr");
-		const createdDate = new Date(listing.created_at).toLocaleDateString();
-		const statusBadge = listing.is_sold 
-			? '<span class="status-badge status-sold">Sold</span>' 
-			: '<span class="status-badge status-active">Active</span>';
-
-		row.innerHTML = `
-			<td>${listing.id}</td>
-			<td>${listing.title}</td>
-			<td>${listing.category_name}</td>
-			<td>${listing.username}</td>
-			<td>R${parseFloat(listing.price).toFixed(2)}</td>
-			<td>${statusBadge}</td>
-			<td>${createdDate}</td>
-			<td>
-				<div class="action-buttons">
-					<button class="btn-sm btn-edit" onclick="editListing(${listing.id}, '${listing.title}', '${listing.username}', ${listing.is_sold})">Edit</button>
-				</div>
-			</td>
-		`;
-		tbody.appendChild(row);
-	});
-
-	document.getElementById("totalListings").textContent = listings.length;
-	document.getElementById("activeListings").textContent = activeCount;
+    const tbody = document.getElementById("listingsTableBody");
+    tbody.innerHTML = '';
+    
+    let activeCount = 0;
+    
+    listings.forEach(listing => {
+        // Convert is_sold to boolean
+        const isSold = listing.is_sold == 1 || listing.is_sold === true;
+        
+        if (!isSold) activeCount++;
+        
+        const row = document.createElement("tr");
+        const createdDate = new Date(listing.created_at).toLocaleDateString();
+        const statusBadge = isSold 
+            ? '<span class="status-badge status-sold">Sold</span>' 
+            : '<span class="status-badge status-active">Active</span>';
+        
+        row.innerHTML = `
+            <td>${listing.id}</td>
+            <td>${listing.title}</td>
+            <td>${listing.category_name}</td>
+            <td>${listing.username}</td>
+            <td>R${parseFloat(listing.price).toFixed(2)}</td>
+            <td>${statusBadge}</td>
+            <td>${createdDate}</td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn-sm btn-edit" onclick="editListing(${listing.id}, '${listing.title}', '${listing.username}', ${isSold})">Edit</button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.getElementById("totalListings").textContent = listings.length;
+    document.getElementById("activeListings").textContent = activeCount;
 }
 
 function editListing(itemId, title, username, isSold) {
