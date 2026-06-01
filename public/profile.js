@@ -1,154 +1,210 @@
+function setupTabs() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabName = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            const targetContent = document.getElementById(tabName);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+}
+
 function loadUserProfile() {
+    console.log('Loading user profile...');
     fetch('api/get_user_profile.php', {
         credentials: 'include'
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Profile data:', data);
         if (data.success) {
             document.getElementById('editUsername').value = data.user.username;
             document.getElementById('editEmail').value = data.user.email || '';
+            
+            // Load trust score
+            console.log('Loading trust score for user:', data.user.id);
+            loadTrustScore(data.user.id);
         }
     })
     .catch(error => console.error('Error loading profile:', error));
 }
 
-function loadUserListings() {
-    fetch('api/get_user_listings.php', {
-        credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(data => {
-        const container = document.getElementById('userListingsContainer');
-        container.innerHTML = '';
-
-        if (!data.listings || data.listings.length === 0) {
-            container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #666;">No listings yet. <a href="sell.html">Create one</a></p>';
-            return;
-        }
-
-        data.listings.forEach(item => {
-            const itemEl = document.createElement('div');
-            itemEl.className = 'listing-card';
-
-            const imageHtml = item.image_url 
-                ? `<img src="${item.image_url}" alt="${item.title}" class="listing-image">`
-                : `<div class="listing-image" style="background-color: #ddd; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
-
-            itemEl.innerHTML = `
-                <div class="listing-image-wrapper">
-                    ${imageHtml}
-                </div>
-                <div class="listing-details">
-                    <h3>${item.title}</h3>
-                    <p class="listing-description">${item.description}</p>
-                    <p class="listing-price">R${parseFloat(item.price).toFixed(2)}</p>
-                    <div class="listing-actions">
-                        <a href="item.html?id=${item.id}" class="btn btn-register">View</a>
-                        <button type="button" class="btn btn-login delete-btn" data-id="${item.id}">Delete</button>
-                    </div>
-                </div>
-            `;
-            container.appendChild(itemEl);
-        });
-
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const listingId = this.getAttribute('data-id');
-                if (confirm('Are you sure you want to delete this listing?')) {
-                    deleteListing(listingId);
+function loadTrustScore(userId) {
+    console.log('Fetching ratings for user:', userId);
+    fetch(`api/get_user_ratings.php?user_id=${userId}`)
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Ratings data received:', data);
+            if (data.success) {
+                const rating = parseFloat(data.average_rating);
+                const totalRatings = parseInt(data.total_ratings);
+                
+                console.log('Updating UI with - rating:', rating, 'totalRatings:', totalRatings);
+                
+                // Update trust score display - make sure elements exist first
+                const scoreEl = document.getElementById('profileTrustScore');
+                const starsEl = document.getElementById('profileTrustStars');
+                const countEl = document.getElementById('profileRatingCount');
+                
+                if (scoreEl) {
+                    scoreEl.textContent = rating.toFixed(1);
+                    console.log('Updated trust score to:', rating.toFixed(1));
+                } else {
+                    console.error('profileTrustScore element not found!');
                 }
-            });
-        });
-    })
-    .catch(error => console.error('Error loading listings:', error));
+                
+                if (starsEl) {
+                    starsEl.innerHTML = generateProfileStars(rating);
+                    console.log('Updated stars');
+                } else {
+                    console.error('profileTrustStars element not found!');
+                }
+                
+                if (countEl) {
+                    const countText = totalRatings === 0 
+                        ? 'No ratings yet' 
+                        : totalRatings + ' rating' + (totalRatings !== 1 ? 's' : '');
+                    countEl.textContent = countText;
+                    console.log('Updated rating count to:', countText);
+                } else {
+                    console.error('profileRatingCount element not found!');
+                }
+                
+                // Display recent ratings if any
+                if (data.recent_ratings && data.recent_ratings.length > 0) {
+                    console.log('Displaying recent ratings:', data.recent_ratings.length);
+                    displayRecentRatings(data.recent_ratings);
+                } else {
+                    console.log('No recent ratings to display');
+                }
+            } else {
+                console.error('Error in ratings response:', data.message);
+            }
+        })
+        .catch(error => console.error('Error loading trust score:', error));
 }
 
-function deleteListing(listingId) {
-    fetch('api/delete_listing.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
-        body: JSON.stringify({id: listingId})
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            loadUserListings();
+function generateProfileStars(rating) {
+    // Convert 10-point scale to 5-star display
+    const fiveStarRating = (rating / 10) * 5;
+    const fullStars = Math.floor(fiveStarRating);
+    const hasHalfStar = fiveStarRating % 1 >= 0.5;
+    let stars = '';
+    
+    for (let i = 0; i < 5; i++) {
+        if (i < fullStars) {
+            stars += '★';
+        } else if (i === fullStars && hasHalfStar) {
+            stars += '½';
         } else {
-            alert('Error deleting listing: ' + data.message);
+            stars += '☆';
         }
-    })
-    .catch(error => {
-        alert('Error deleting listing: ' + error.message);
-        console.error('Error:', error);
+    }
+    console.log('Generated stars for rating', rating, ':', stars);
+    return stars;
+}
+
+function displayRecentRatings(ratings) {
+    const container = document.getElementById('recentRatingsContainer');
+    if (!container) {
+        console.error('recentRatingsContainer not found!');
+        return;
+    }
+    
+    let html = '<h3>Recent Ratings</h3><div class="ratings-list">';
+    
+    ratings.forEach(rating => {
+        const date = new Date(rating.created_at).toLocaleDateString();
+        const starDisplay = '★'.repeat(Math.round(rating.rating / 2)); // Convert to 5-star
+        html += `
+            <div class="rating-item">
+                <div class="rating-header">
+                    <strong>${escapeHtml(rating.username)}</strong>
+                    <span class="rating-badge">${rating.role}</span>
+                    <span class="rating-value">${starDisplay}</span>
+                </div>
+                ${rating.review ? `<p class="rating-review">${escapeHtml(rating.review)}</p>` : ''}
+                <small class="rating-date">${date}</small>
+            </div>
+        `;
     });
+    
+    html += '</div>';
+    container.innerHTML = html;
+    console.log('Recent ratings displayed');
 }
 
-// Check if user is admin and show admin tab
-function checkAdminStatus() {
-    fetch("api/check_session.php", {
-        credentials: 'include',
-        cache: 'no-store'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.logged_in && data.is_admin) {
-            document.getElementById("adminTabBtn").style.display = "block";
-        }
-    })
-    .catch(error => console.error('Error checking admin status:', error));
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Profile page loaded, initializing...');
+    
+    // Setup tabs FIRST
+    setupTabs();
+    
+    // Load profile data
     loadUserProfile();
     loadUserListings();
     checkAdminStatus();
 
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const tabName = this.getAttribute('data-tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const tabButtons = document.querySelectorAll('.tab-btn');
+    // Setup profile form
+    const profileForm = document.getElementById('profileForm');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newUsername = document.getElementById('editUsername').value;
+            const formData = {
+                username: newUsername
+            };
 
-            tabContents.forEach(content => content.classList.remove('active'));
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            fetch('api/update_user_profile.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include',
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const errorEl = document.getElementById('profileError');
+                const successEl = document.getElementById('profileSuccess');
 
-            document.getElementById(tabName).classList.add('active');
-            this.classList.add('active');
+                if (data.success) {
+                    errorEl.style.display = 'none';
+                    successEl.textContent = 'Profile updated successfully!';
+                    successEl.style.display = 'block';
+                    document.getElementById('username').textContent = newUsername;
+                    checkSession();
+                    setTimeout(() => successEl.style.display = 'none', 3000);
+                } else {
+                    successEl.style.display = 'none';
+                    errorEl.textContent = data.message;
+                    errorEl.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                document.getElementById('profileError').textContent = 'Error updating profile';
+                document.getElementById('profileError').style.display = 'block';
+            });
         });
-    });
-
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const newUsername = document.getElementById('editUsername').value;
-        const formData = {
-            username: newUsername
-        };
-
-        fetch('api/update_user_profile.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            const errorEl = document.getElementById('profileError');
-            const successEl = document.getElementById('profileSuccess');
-
-            if (data.success) {
-                errorEl.style.display = 'none';
-                successEl.textContent = 'Profile updated successfully!';
-                successEl.style.display = 'block';
-                document.getElementById('username').textContent = newUsername;
-                checkSession();
-                setTimeout(() => successEl.style.display = 'none', 3000);
-            } else {
-                successEl.style.display = 'none';
-                errorEl.textContent = data.message;
-                errorEl.style.display = 'block';
-            }
-        });
-    });
+    }
 });

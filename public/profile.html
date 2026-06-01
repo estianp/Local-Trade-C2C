@@ -40,6 +40,25 @@
 
             <div id="edit-profile" class="tab-content active">
                 <h2>Edit Profile</h2>
+                
+                <!-- Trust Score Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                    <h3 style="margin: 0 0 10px 0;">Your Trust Score</h3>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 48px; font-weight: bold;" id="profileTrustScore">0.0</div>
+                        <div>
+                            <div id="profileTrustStars" style="font-size: 24px; margin-bottom: 5px;">☆☆☆☆☆</div>
+                            <div style="font-size: 14px;" id="profileRatingCount">No ratings yet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Ratings -->
+                <div id="recentRatingsContainer" style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                    <!-- Ratings will be loaded here -->
+                </div>
+
+                <!-- Existing form -->
                 <form id="profileForm">
                     <div class="form-group">
                         <label for="editUsername">Username:</label>

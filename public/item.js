@@ -41,6 +41,9 @@ function loadItem() {
                 document.getElementById('itemImage').style.height = '400px';
                 document.getElementById('itemImage').alt = 'No Image';
             }
+            
+            // Load seller's trust score
+            loadSellerTrustScore(item.user_id);
         } else {
             document.querySelector('.item-detail-section').innerHTML = `<p style="text-align: center; color: red;">${data.message}</p>`;
         }
@@ -49,6 +52,29 @@ function loadItem() {
         console.error('Error loading item:', error);
         document.querySelector('.item-detail-section').innerHTML = '<p style="text-align: center; color: red;">Error loading item</p>';
     });
+}
+
+function loadSellerTrustScore(sellerId) {
+    fetch(`api/get_user_ratings.php?user_id=${sellerId}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const ratingValue = data.average_rating || 0;
+            const totalRatings = data.total_ratings || 0;
+            
+            document.getElementById('sellerRatingValue').textContent = ratingValue.toFixed(1);
+            document.getElementById('sellerRatingCount').textContent = totalRatings;
+            
+            // Convert 10-point scale to 5-star display
+            const starCount = Math.round((ratingValue / 10) * 5);
+            let starsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                starsHtml += i < starCount ? '★' : '☆';
+            }
+            document.getElementById('sellerStars').textContent = starsHtml;
+        }
+    })
+    .catch(error => console.error('Error loading seller trust score:', error));
 }
 
 function openPaymentModal() {

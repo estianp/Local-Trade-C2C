@@ -7,6 +7,8 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     is_admin BOOLEAN DEFAULT 0,
+    average_rating DECIMAL(3, 2) DEFAULT 0,
+    total_ratings INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -65,6 +67,23 @@ CREATE TABLE shipping_addresses (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rater_id INT NOT NULL,
+    ratee_id INT NOT NULL,
+    item_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 10),
+    review TEXT,
+    rating_type ENUM('buyer_to_seller', 'seller_to_buyer') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (rater_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (ratee_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_rating (rater_id, ratee_id, item_id, rating_type),
+    INDEX idx_ratee_id (ratee_id),
+    INDEX idx_item_id (item_id)
+);
+
 INSERT INTO categories (name, parent_id) VALUES 
 ('Electronics', NULL),
 ('Mobile Phones', 1),
@@ -119,4 +138,19 @@ INSERT INTO categories (name, parent_id) VALUES
 ('Collectibles', 49),
 ('Vintage Items', 49),
 ('Other', NULL);
+
+-- Add trigger to automatically update user ratings when a new rating is inserted
+DELIMITER //
+
+CREATE TRIGGER update_user_rating_on_insert 
+AFTER INSERT ON ratings
+FOR EACH ROW
+BEGIN
+    UPDATE users 
+    SET average_rating = (SELECT AVG(rating) FROM ratings WHERE ratee_id = NEW.ratee_id),
+        total_ratings = (SELECT COUNT(*) FROM ratings WHERE ratee_id = NEW.ratee_id)
+    WHERE id = NEW.ratee_id;
+END //
+
+DELIMITER ;
 

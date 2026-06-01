@@ -188,8 +188,9 @@ function completePurchaseWithSavedCard() {
             successEl.textContent = 'Purchase completed successfully!';
             successEl.style.display = 'block';
             setTimeout(() => {
-                window.location.href = `item.html?id=${itemId}`;
-            }, 2000);
+                // Redirect to purchase complete page
+                window.location.href = `purchase_complete.html?id=${itemId}`;
+            }, 1500);
         } else {
             errorEl.textContent = data.message;
             errorEl.style.display = 'block';
@@ -272,8 +273,9 @@ function completeCheckout() {
             successEl.textContent = 'Purchase completed successfully!';
             successEl.style.display = 'block';
             setTimeout(() => {
-                window.location.href = `item.html?id=${itemId}`;
-            }, 2000);
+                // Redirect to purchase complete page instead of item page
+                window.location.href = `purchase_complete.html?id=${itemId}`;
+            }, 1500);
         } else {
             errorEl.textContent = data.message;
             errorEl.style.display = 'block';

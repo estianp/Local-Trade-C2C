@@ -27,33 +27,88 @@
     <section class="item-detail-section">
         <div class="item-detail-container">
             <a href="browse.html" class="back-link">← Back to Browse</a>
-            
+
             <div class="item-detail">
                 <div class="item-detail-image">
                     <img id="itemImage" src="" alt="Item image" style="width: 100%; border-radius: 8px;">
                 </div>
-                
+
                 <div class="item-detail-info">
                     <p id="itemCategory" class="item-category-badge"></p>
                     <h1 id="itemTitle"></h1>
                     <p id="itemSeller" class="item-seller-detail"></p>
                     <p id="itemDescription" class="item-description-detail"></p>
-                    
+
                     <div class="item-price-detail">
                         <span id="itemPrice" class="price-text"></span>
                     </div>
-                    
+
                     <p id="itemDate" class="item-date"></p>
                     <p id="itemStatus" class="item-status"></p>
-                    
+
                     <button id="buyNowBtn" type="button" class="btn btn-register" style="width: 100%; padding: 15px; margin-top: 20px;">Buy Now</button>
+
+                    <!-- Add this after the item title -->
+                    <div id="sellerRating" style="margin: 15px 0; padding: 15px; background-color: #f9f9f9; border-radius: 8px;">
+                        <h3>Seller Trust Score</h3>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div>
+                                <span id="sellerRatingValue" style="font-size: 24px; font-weight: bold; color: #f39c12;">0.0</span>
+                                <span style="color: #999;">/ 10</span>
+                            </div>
+                            <div id="sellerStars" style="font-size: 20px; color: #f39c12;">★★★★★</div>
+                            <div style="color: #666;">
+                                (<span id="sellerRatingCount">0</span> ratings)
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div id="ratingSection" style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #ddd; display: none;">
+                <h3>Rate This Transaction</h3>
+
+                <div id="buyerRatingForm" style="margin-bottom: 20px; display: none;">
+                    <h4>Rate the Seller</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label>Rating (1-10):</label><br>
+                        <div id="buyerStarRating" style="font-size: 30px; color: #ddd; cursor: pointer;">
+                            ★ ★ ★ ★ ★ ★ ★ ★ ★ ★
+                        </div>
+                        <input type="hidden" id="buyerRating" value="0">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label>Review (Optional):</label><br>
+                        <textarea id="buyerReview" placeholder="Share your experience with this seller..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-register" id="submitBuyerRating">Submit Rating</button>
+                </div>
+
+                <div id="sellerRatingForm" style="display: none;">
+                    <h4>Rate the Buyer</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label>Rating (1-10):</label><br>
+                        <div id="sellerStarRating" style="font-size: 30px; color: #ddd; cursor: pointer;">
+                            ★ ★ ★ ★ ★ ★ ★ ★ ★ ★
+                        </div>
+                        <input type="hidden" id="sellerRating" value="0">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label>Review (Optional):</label><br>
+                        <textarea id="sellerReview" placeholder="Share your experience with this buyer..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-register" id="submitSellerRating">Submit Rating</button>
+                </div>
+
+                <p id="ratingError" class="error" style="display: none;"></p>
+                <p id="ratingSuccess" style="color: green; display: none;"></p>
             </div>
         </div>
     </section>
 
     <script src="script.js"></script>
     <script src="item.js"></script>
+    <script src="rating.js"></script>
 </body>
 
 </html>
