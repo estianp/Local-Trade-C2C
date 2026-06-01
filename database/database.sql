@@ -7,7 +7,7 @@ CREATE TABLE users (
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     is_admin BOOLEAN DEFAULT 0,
-    average_rating DECIMAL(3, 2) DEFAULT 0,
+    average_rating DECIMAL(4, 1) DEFAULT 0,
     total_ratings INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
