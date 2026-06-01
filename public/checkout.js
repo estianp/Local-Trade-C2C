@@ -1,9 +1,11 @@
-let itemId, itemPrice, savedPaymentDetails;
+let itemId, itemPrice, savedPaymentDetails, savedAddress;
+const SHIPPING_COST = 99;
 
 document.addEventListener('DOMContentLoaded', function() {
     checkSession();
     loadItemDetails();
     loadSavedPayment();
+    loadSavedAddress();
     setupForm();
 });
 
@@ -30,7 +32,7 @@ function loadItemDetails() {
             document.getElementById('itemSeller').textContent = `Seller: ${item.username}`;
             document.getElementById('itemDescription').textContent = item.description.substring(0, 100) + '...';
             document.getElementById('itemPrice').textContent = `R${itemPrice.toFixed(2)}`;
-            document.getElementById('totalAmount').textContent = `R${itemPrice.toFixed(2)}`;
+            updateTotal();
         } else {
             alert('Item not found');
             window.location.href = 'browse.html';
@@ -67,7 +69,38 @@ function loadSavedPayment() {
     .catch(error => console.error('Error loading saved payment:', error));
 }
 
+function loadSavedAddress() {
+    fetch('api/get_shipping_address.php', {
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.exists) {
+            savedAddress = data.address;
+            
+            document.getElementById('savedAddressContainer').style.display = 'block';
+            document.getElementById('savedAddressInfo').innerHTML = `
+                <p><strong>${data.address.full_name}</strong></p>
+                <p>${data.address.street_address}, ${data.address.city}, ${data.address.province} ${data.address.postal_code}</p>
+                <p>Phone: ${data.address.phone_number}</p>
+            `;
+
+            document.getElementById('useSavedAddressBtn').addEventListener('click', function() {
+                useSavedAddressForm();
+            });
+        }
+    })
+    .catch(error => console.error('Error loading saved address:', error));
+}
+
 function setupForm() {
+    // Shipping checkbox
+    document.getElementById('enableShipping').addEventListener('change', function() {
+        document.getElementById('addressForm').style.display = this.checked ? 'block' : 'none';
+        document.getElementById('savedAddressContainer').style.display = (this.checked && savedAddress) ? 'block' : 'none';
+        updateTotal();
+    });
+
     // Format card number
     document.getElementById('cardNumber').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\s/g, '');
@@ -96,9 +129,47 @@ function setupForm() {
     });
 }
 
+function updateTotal() {
+    const shipping = document.getElementById('enableShipping').checked ? SHIPPING_COST : 0;
+    const total = itemPrice + shipping;
+    
+    document.getElementById('shippingCost').textContent = `R${shipping.toFixed(2)}`;
+    document.getElementById('totalAmount').textContent = `R${total.toFixed(2)}`;
+}
+
+function useSavedAddressForm() {
+    document.getElementById('addressForm').style.display = 'none';
+    document.getElementById('savedAddressContainer').style.display = 'block';
+    
+    // Hide "Use This Address" button and show form toggle
+    document.getElementById('useSavedAddressBtn').style.display = 'none';
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'btn btn-login';
+    editBtn.textContent = 'Use Different Address';
+    editBtn.style.width = '100%';
+    editBtn.addEventListener('click', function() {
+        document.getElementById('addressForm').style.display = 'block';
+        document.getElementById('savedAddressContainer').style.display = 'none';
+    });
+    document.getElementById('savedAddressInfo').parentElement.appendChild(editBtn);
+}
+
 function completePurchaseWithSavedCard() {
     const errorEl = document.getElementById('checkoutError');
     const successEl = document.getElementById('checkoutSuccess');
+    
+    let shippingData = null;
+    if (document.getElementById('enableShipping').checked) {
+        if (!savedAddress) {
+            errorEl.textContent = 'Please select or enter a shipping address';
+            errorEl.style.display = 'block';
+            return;
+        }
+        shippingData = {
+            use_saved_address: true
+        };
+    }
 
     fetch('api/purchase_item.php', {
         method: 'POST',
@@ -106,7 +177,9 @@ function completePurchaseWithSavedCard() {
         credentials: 'include',
         body: JSON.stringify({
             item_id: itemId,
-            use_saved_payment: true
+            use_saved_payment: true,
+            use_shipping: document.getElementById('enableShipping').checked,
+            ...shippingData
         })
     })
     .then(response => response.json())
@@ -143,11 +216,39 @@ function completeCheckout() {
     successEl.textContent = '';
     successEl.style.display = 'none';
 
-    // Basic validation
+    // Validation
     if (!cardHolder || !cardNumber || !expiryDate || !cvv || !zipCode) {
-        errorEl.textContent = 'All fields are required';
+        errorEl.textContent = 'All payment fields are required';
         errorEl.style.display = 'block';
         return;
+    }
+
+    let shippingData = {};
+    if (document.getElementById('enableShipping').checked) {
+        const fullName = document.getElementById('fullName').value.trim();
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const streetAddress = document.getElementById('streetAddress').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const province = document.getElementById('province').value.trim();
+        const postalCode = document.getElementById('postalCode').value.trim();
+        const saveAddress = document.getElementById('saveAddress').checked;
+
+        if (!fullName || !phoneNumber || !streetAddress || !city || !province || !postalCode) {
+            errorEl.textContent = 'All delivery fields are required';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        shippingData = {
+            use_shipping: true,
+            full_name: fullName,
+            phone_number: phoneNumber,
+            street_address: streetAddress,
+            city: city,
+            province: province,
+            postal_code: postalCode,
+            save_address: saveAddress
+        };
     }
 
     fetch('api/purchase_item.php', {
@@ -161,7 +262,8 @@ function completeCheckout() {
             expiry_date: expiryDate,
             cvv: cvv,
             zip_code: zipCode,
-            save_payment: savePayment
+            save_payment: savePayment,
+            ...shippingData
         })
     })
     .then(response => response.json())

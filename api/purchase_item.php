@@ -81,6 +81,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $insert_stmt->close();
         }
         $check_stmt->close();
+    }	
+	
+	if ($data['use_shipping'] && $data['save_address']) {
+        $full_name = $data['full_name'] ?? '';
+        $phone_number = $data['phone_number'] ?? '';
+        $street_address = $data['street_address'] ?? '';
+        $city = $data['city'] ?? '';
+        $province = $data['province'] ?? '';
+        $postal_code = $data['postal_code'] ?? '';
+        
+        $check_sql = "SELECT id FROM shipping_addresses WHERE user_id = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("i", $user_id);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
+        
+        if ($check_result->num_rows > 0) {
+            $update_sql = "UPDATE shipping_addresses SET full_name = ?, phone_number = ?, street_address = ?, city = ?, province = ?, postal_code = ? WHERE user_id = ?";
+            $update_stmt = $conn->prepare($update_sql);
+            $update_stmt->bind_param("ssssssi", $full_name, $phone_number, $street_address, $city, $province, $postal_code, $user_id);
+            $update_stmt->execute();
+            $update_stmt->close();
+        } else {
+            $insert_sql = "INSERT INTO shipping_addresses (user_id, full_name, phone_number, street_address, city, province, postal_code) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insert_stmt = $conn->prepare($insert_sql);
+            $insert_stmt->bind_param("issssss", $user_id, $full_name, $phone_number, $street_address, $city, $province, $postal_code);
+            $insert_stmt->execute();
+            $insert_stmt->close();
+        }
+        $check_stmt->close();
     }
     
     echo json_encode(['success' => true, 'message' => 'Purchase completed successfully']);

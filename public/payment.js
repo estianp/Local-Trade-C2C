@@ -17,7 +17,7 @@ function loadPaymentDetails() {
         if (data.success && data.exists) {
             statusEl.innerHTML = `
                 <div style="padding: 15px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; color: #155724;">
-                    <strong>✓ Payment details saved</strong><br>
+                    <strong>Payment details saved</strong><br>
                     <small>Cardholder: ${data.card_holder_name}</small><br>
                     <small>Card: ${data.card_number}</small><br>
                     <small>Expires: ${data.expiry_date}</small>

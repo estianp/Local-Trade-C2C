@@ -46,7 +46,7 @@
                         </div>
                         <div class="total-row">
                             <span>Shipping:</span>
-                            <span class="price">R0.00</span>
+                            <span id="shippingCost" class="price">R0.00</span>
                         </div>
                         <div class="total-row total-amount">
                             <span>Total Amount:</span>
@@ -59,8 +59,76 @@
                     </a>
                 </div>
 
-                <!-- Payment Form -->
+                <!-- Payment & Shipping Form -->
                 <div class="payment-form-section">
+                    <!-- Shipping Section -->
+                    <div style="margin-bottom: 30px;">
+                        <h2>Delivery Details</h2>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; cursor: pointer;">
+                            <input type="checkbox" id="enableShipping">
+                            Add Shipping (R99.00)
+                        </label>
+
+                        <!-- Saved Address Option -->
+                        <div id="savedAddressContainer" style="display: none; margin-bottom: 20px;">
+                            <div class="saved-payment-card">
+                                <h3>Use Saved Address</h3>
+                                <div id="savedAddressInfo" class="payment-info"></div>
+                                <button type="button" class="btn btn-register" id="useSavedAddressBtn" style="width: 100%; margin-top: 15px;">
+                                    Use This Address
+                                </button>
+                            </div>
+
+                            <div class="divider">
+                                <span>OR</span>
+                            </div>
+                        </div>
+
+                        <!-- Address Form -->
+                        <form id="addressForm" style="display: none;">
+                            <div class="form-group">
+                                <label for="fullName">Full Name:</label>
+                                <input type="text" id="fullName" placeholder="John Doe" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number:</label>
+                                <input type="tel" id="phoneNumber" placeholder="+27 123 456 7890" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="streetAddress">Street Address:</label>
+                                <input type="text" id="streetAddress" placeholder="123 Main Street" required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    <label for="city">City:</label>
+                                    <input type="text" id="city" placeholder="Cape Town" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="province">Province:</label>
+                                    <input type="text" id="province" placeholder="Western Cape" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code:</label>
+                                <input type="text" id="postalCode" placeholder="8000" required>
+                            </div>
+
+                            <label style="display: flex; align-items: center; gap: 10px; margin-top: 15px; color: #666;">
+                                <input type="checkbox" id="saveAddress">
+                                Save address for future deliveries
+                            </label>
+                        </form>
+                    </div>
+
+                    <hr style="margin: 30px 0;">
+
+                    <!-- Payment Section -->
                     <h2>Payment Details</h2>
                     
                     <!-- Saved Payment Option -->

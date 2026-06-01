@@ -30,10 +30,11 @@
         <div class="profile-container">
             <div class="profile-tabs">
                 <button class="tab-btn active" data-tab="edit-profile">Edit Profile</button>
+                <button class="tab-btn" data-tab="shipping-address">Shipping Address</button>
                 <button class="tab-btn" data-tab="payment-details">Payment Details</button>
                 <button class="tab-btn" data-tab="my-listings">My Listings</button>
                 <button class="tab-btn" data-tab="admin-portal" id="adminTabBtn" style="display: none;">
-                    Admin Portal
+                   Admin Portal
                 </button>
             </div>
 
@@ -53,6 +54,53 @@
                     <button type="submit" class="btn btn-register">Save Changes</button>
                     <p id="profileError" class="error"></p>
                     <p id="profileSuccess" style="color: green; display: none;"></p>
+                </form>
+            </div>
+
+            <div id="shipping-address" class="tab-content">
+                <h2>Shipping Address</h2>
+                <div id="shippingStatus" style="margin-bottom: 20px;"></div>
+                <form id="shippingForm">
+                    <div class="form-group">
+                        <label for="shippingFullName">Full Name:</label>
+                        <input type="text" id="shippingFullName" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shippingPhone">Phone Number:</label>
+                        <input type="tel" id="shippingPhone" placeholder="+27 123 456 7890" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shippingStreet">Street Address:</label>
+                        <input type="text" id="shippingStreet" placeholder="123 Main Street" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label for="shippingCity">City:</label>
+                            <input type="text" id="shippingCity" placeholder="Cape Town" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shippingProvince">Province:</label>
+                            <input type="text" id="shippingProvince" placeholder="Western Cape" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shippingPostal">Postal Code:</label>
+                        <input type="text" id="shippingPostal" placeholder="8000" required>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-register">Save Shipping Address</button>
+                        <button type="button" class="btn btn-delete" id="deleteShippingBtn" style="display: none;">
+                            Delete Address
+                        </button>
+                    </div>
+                    <p id="shippingError" class="error"></p>
+                    <p id="shippingSuccess" style="color: green; display: none;"></p>
                 </form>
             </div>
 
@@ -84,7 +132,9 @@
 
                     <div style="display: flex; gap: 10px;">
                         <button type="submit" class="btn btn-register">Save Payment Details</button>
-                        <button type="button" class="btn btn-delete" id="deletePaymentBtn" style="display: none;">Delete Payment Details</button>
+                        <button type="button" class="btn btn-delete" id="deletePaymentBtn" style="display: none;">
+                            Delete Payment Details
+                        </button>
                     </div>
                     <p id="paymentError" class="error"></p>
                     <p id="paymentSuccess" style="color: green; display: none;"></p>
@@ -109,6 +159,7 @@
     <script src="script.js"></script>
     <script src="profile.js"></script>
     <script src="payment.js"></script>
+    <script src="shipping.js"></script>
 </body>
 
 </html>
