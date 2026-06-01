@@ -155,6 +155,106 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function loadUserListings() {
+    console.log('Loading user listings...');
+    fetch('api/get_user_listings.php', {
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Listings data:', data);
+        if (data.success && data.listings.length > 0) {
+            displayUserListings(data.listings);
+        } else {
+            const container = document.getElementById('userListingsContainer');
+            if (container) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">You have no listings yet. <a href="sell.html">Create one now!</a></p>';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error loading listings:', error);
+        const container = document.getElementById('userListingsContainer');
+        if (container) {
+            container.innerHTML = '<p style="text-align: center; color: red;">Error loading listings</p>';
+        }
+    });
+}
+
+function displayUserListings(listings) {
+    const container = document.getElementById('userListingsContainer');
+    if (!container) {
+        console.error('userListingsContainer not found!');
+        return;
+    }
+    
+    let html = '';
+    listings.forEach(item => {
+        html += `
+            <div class="item-card">
+                <img src="${item.image_url || 'placeholder.png'}" alt="${escapeHtml(item.title)}" class="item-image">
+                <div class="item-content">
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p class="item-description">${escapeHtml(item.description.substring(0, 100))}</p>
+                    <div class="item-price">R${parseFloat(item.price).toFixed(2)}</div>
+                    <div class="item-actions">
+                        <a href="item.html?id=${item.id}" class="btn btn-sm btn-register">View</a>
+                        <button class="btn btn-sm btn-delete" onclick="deleteUserListing(${item.id})">Delete</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    console.log('User listings displayed');
+}
+
+function deleteUserListing(itemId) {
+    if (!confirm('Are you sure you want to delete this listing?')) {
+        return;
+    }
+    
+    console.log('Deleting item:', itemId);
+    fetch('api/delete_listing.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({item_id: itemId})
+    })
+    .then(response => {
+        console.log('Delete response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Delete response:', data);
+        if (data.success) {
+            console.log('Listing deleted, reloading...');
+            loadUserListings();
+        } else {
+            alert('Error deleting listing: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting listing:', error);
+        alert('Error deleting listing');
+    });
+}
+
+function checkAdminStatus() {
+    fetch('api/check_session.php', {
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Session check:', data);
+        if (data.is_admin === true || data.is_admin === 1) {
+            document.getElementById('adminTabBtn').style.display = 'block';
+        }
+    })
+    .catch(error => console.error('Error checking admin status:', error));
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Profile page loaded, initializing...');
